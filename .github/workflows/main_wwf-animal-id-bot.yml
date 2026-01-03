@@ -63,4 +63,15 @@ jobs:
           app-name: 'wwf-animal-id-bot'
           slot-name: 'Production'
           package: .
+
+      - name: Set App Settings
+        uses: azure/appservice-settings@v1
+        with:
+          app-name: 'wwf-animal-id-bot'
+          app-settings-json: |
+            [
+              { "name": "TELEGRAM_BOT_TOKEN", "value": "${{ secrets.TELEGRAM_BOT_TOKEN }}" },
+              { "name": "GEMINI_API_KEY", "value": "${{ secrets.GEMINI_API_KEY }}" },
+              { "name": "PORT", "value": "3001" }
+            ]
           
