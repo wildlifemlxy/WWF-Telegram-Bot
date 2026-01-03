@@ -1,0 +1,19 @@
+{
+  "name": "animal-identification-bot",
+  "version": "1.0.0",
+  "description": "Telegram bot for animal species identification using Google Gemini",
+  "main": "bin/www",
+  "type": "module",
+  "scripts": {
+    "start": "node bin/www",
+    "dev": "node --watch bin/www"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.21.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.2",
+    "telegraf": "^4.15.3"
+  }
+}
