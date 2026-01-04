@@ -10,6 +10,12 @@ let bot;
 export function startBot() {
   bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
+  // Global error handler - catches errors like "bot was blocked by user"
+  bot.catch((err, ctx) => {
+    console.error(`Error for ${ctx.updateType}:`, err.message);
+    // Don't crash on user-blocked errors or other Telegram API errors
+  });
+
   // /start command
   bot.start((ctx) => {
     ctx.reply(
