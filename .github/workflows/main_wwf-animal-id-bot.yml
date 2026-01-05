@@ -72,6 +72,7 @@ jobs:
             [
               { "name": "TELEGRAM_BOT_TOKEN", "value": "${{ secrets.TELEGRAM_BOT_TOKEN }}" },
               { "name": "GEMINI_API_KEY", "value": "${{ secrets.GEMINI_API_KEY }}" },
-              { "name": "PORT", "value": "3001" }
+              { "name": "PORT", "value": "3001" },
+              { "name": "WEBHOOK_URL", "value": "https://wwf-animal-id-bot.azurewebsites.net" }
             ]
           

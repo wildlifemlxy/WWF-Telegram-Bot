@@ -71,7 +71,7 @@ export function startBot() {
     );
   });
 
-  // Handle photo uploads - show location buttons
+  // Handle photo uploads - ask for location as text input
   bot.on('photo', async (ctx) => {
     const photo = ctx.message.photo[ctx.message.photo.length - 1];
     const caption = ctx.message.caption?.trim();
@@ -79,18 +79,14 @@ export function startBot() {
     // Store photo
     userPhotos.set(ctx.from.id, photo.file_id);
     
-    // If caption is /identify, show location buttons with auto-identify
+    // If caption is /identify, set state to auto-identify after location
     if (caption === '/identify') {
-      await ctx.reply(
-        '📍 Where was this photo taken? (optional)',
-        getLocationKeyboard(true)
-      );
+      userState.set(ctx.from.id, 'waiting_for_location_auto');
+      await ctx.reply('📍 Where was this photo taken? (optional)\n\nType your location or type "skip" to continue without location.');
     } else {
-      // Show location buttons
-      await ctx.reply(
-        '✅ Photo received!\n\n📍 Where was this photo taken? (optional)',
-        getLocationKeyboard(false)
-      );
+      // Set state to wait for location
+      userState.set(ctx.from.id, 'waiting_for_location');
+      await ctx.reply('✅ Photo received!\n\n📍 Where was this photo taken? (optional)\n\nType your location or type "skip" to continue.');
     }
   });
 
@@ -183,7 +179,7 @@ export function startBot() {
     await performIdentification(ctx, ctx.from.id, location);
   });
 
-  // Handle text messages - check if we're waiting for custom location
+  // Handle text messages - check if we're waiting for location
   bot.on('text', async (ctx) => {
     const text = ctx.message.text;
     
@@ -194,17 +190,28 @@ export function startBot() {
     
     const state = userState.get(ctx.from.id);
     
-    if (state === 'waiting_for_custom_location' || state === 'waiting_for_custom_location_auto') {
-      const location = text.trim();
+    // Handle location input (text-based)
+    if (state === 'waiting_for_location' || state === 'waiting_for_location_auto' || 
+        state === 'waiting_for_custom_location' || state === 'waiting_for_custom_location_auto') {
+      
+      const inputText = text.trim().toLowerCase();
+      const location = inputText === 'skip' ? null : text.trim();
       
       // Store location
       userState.set(ctx.from.id + '_location', location);
       userState.delete(ctx.from.id);
       
-      if (state === 'waiting_for_custom_location_auto') {
+      // Check if auto-identify
+      const isAuto = state === 'waiting_for_location_auto' || state === 'waiting_for_custom_location_auto';
+      
+      if (isAuto) {
         await performIdentification(ctx, ctx.from.id, location);
       } else {
-        await ctx.reply(`📍 Location set to: ${location}\n\nNow type /identify to identify the animal.`);
+        if (location) {
+          await ctx.reply(`📍 Location set to: ${location}\n\nNow type /identify to identify the animal.`);
+        } else {
+          await ctx.reply('👍 No problem!\n\nNow type /identify to identify the animal.');
+        }
       }
     } else {
       ctx.reply('📸 Please send me a photo of an animal first.');
@@ -227,14 +234,23 @@ export function startBot() {
     }
   }
 
-  // Start bot
-  bot.launch().then(() => {
-    console.log('🤖 Animal Identification Bot is running!');
-  });
+  // Start bot - use webhook in production, polling in development
+  const WEBHOOK_URL = process.env.WEBHOOK_URL;
+  
+  if (WEBHOOK_URL) {
+    // Production: Use webhook
+    console.log('🌐 Starting bot with webhook...');
+  } else {
+    // Development: Use polling
+    bot.launch().then(() => {
+      console.log('🤖 Animal Identification Bot is running (polling mode)!');
+    });
+  }
 
   // Graceful shutdown
   process.once('SIGINT', () => bot.stop('SIGINT'));
   process.once('SIGTERM', () => bot.stop('SIGTERM'));
 }
 
+// Export bot for webhook handler
 export { bot };
