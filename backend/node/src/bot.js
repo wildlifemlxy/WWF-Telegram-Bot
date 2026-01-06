@@ -397,9 +397,9 @@ async function sendIdentificationResult(ctx, result, sendAsPM = false) {
 async function setupBotCommands() {
   try {
     await bot.telegram.setMyCommands([
-      { command: 'start', description: 'Start the bot and see welcome message' },
-      { command: 'help', description: 'Show available commands and tips' },
-      { command: 'identify', description: 'Start animal identification' }
+      { command: 'start', description: 'Show welcome message (in groups: /start@wwf_animal_id_bot)' },
+      { command: 'help', description: 'Show help and tips (in groups: /help@wwf_animal_id_bot)' },
+      { command: 'identify', description: 'Identify wildlife (in groups: /identify@wwf_animal_id_bot)' }
     ]);
     console.log('✅ Bot commands menu set up successfully');
   } catch (error) {
