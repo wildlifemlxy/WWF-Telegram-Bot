@@ -28,17 +28,21 @@ bot.use(async (ctx, next) => {
         try {
           const me = await ctx.telegram.getMe();
           botUsername = me.username.toLowerCase();
+          console.log('Bot username:', botUsername);
         } catch (e) {
           console.error('Failed to get bot username:', e.message);
+          // If we can't get username, let the command through
+          return next();
         }
       }
       
       // Extract the @username from the command
       const match = text.match(/^\/\w+@(\w+)/);
-      if (match) {
+      if (match && botUsername) {
         const targetBot = match[1].toLowerCase();
         // If command is for a different bot, ignore it
         if (targetBot !== botUsername) {
+          console.log(`Ignoring command for @${targetBot}, I am @${botUsername}`);
           return; // Don't process this command
         }
       }
