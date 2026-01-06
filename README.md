@@ -1,6 +1,6 @@
-# � WWF Wildlife Identification Bot
+# 🐼 WWF Wildlife Telegram Bots
 
-A Telegram bot powered by Google Gemini AI to help identify wildlife species from photos. Built to support WWF's mission in wildlife conservation and education.
+A collection of Telegram bots built to support WWF's mission in wildlife conservation and education.
 
 ![Node.js](https://img.shields.io/badge/Node.js-18+-green)
 ![Telegram](https://img.shields.io/badge/Telegram-Bot-blue)
@@ -9,16 +9,37 @@ A Telegram bot powered by Google Gemini AI to help identify wildlife species fro
 
 ## 🌍 About
 
-This bot was created to support wildlife conservation efforts by helping users identify animal species they encounter. Whether you're a nature enthusiast, researcher, or just curious about wildlife, this bot makes species identification quick and easy.
+This repository contains multiple Telegram bots created to support WWF's wildlife conservation efforts. Each bot serves a specific purpose in engaging the community and promoting wildlife awareness.
 
-## ✨ Features
+---
 
-- 📸 Identify wildlife from photos using AI
-- 🤖 Powered by Google Gemini AI for accurate identification
+## 🤖 Bots
+
+### 1. WWF Animal Identifier (`@wwf_animal_id_bot`)
+
+Identify wildlife species from photos using AI.
+
+**Features:**
+- 📸 Identify wildlife from photos using Google Gemini AI
 - 🔍 Get scientific names and common names
 - 📍 Location-aware identification for regional species
 - 💬 Works in Telegram groups and private chats
 - 📬 Results sent via PM to keep group chats clean
+
+**Commands:**
+| Command | Description |
+|---------|-------------|
+| `/start` | Start the bot and see welcome message |
+| `/help` | Get usage instructions and tips |
+| `/identify` | Start wildlife identification |
+
+**Usage:**
+1. Type `/identify` to start
+2. Upload a photo of the wildlife
+3. Enter location (or type "skip")
+4. Receive species information via PM!
+
+---
 
 ## 🚀 Getting Started
 
@@ -66,23 +87,6 @@ This bot was created to support wildlife conservation efforts by helping users i
    ```bash
    npm start
    ```
-
-## 📖 Usage
-
-1. Open Telegram and find the bot: `@wwf_animal_id_bot`
-2. Send `/start` to see welcome message
-3. Send `/identify` to start identification
-4. Upload a photo of the wildlife
-5. Enter location (or type "skip")
-6. Receive species information via PM!
-
-## 🤖 Bot Commands
-
-| Command | Description |
-|---------|-------------|
-| `/start` | Start the bot and see welcome message |
-| `/help` | Get usage instructions and tips |
-| `/identify` | Start wildlife identification |
 
 ## 🛠️ Tech Stack
 
